@@ -543,6 +543,8 @@ export default {
    * @param {Object} pos
    */
   updateToolbarPos(pos) {
+    const { em } = this.config;
+    em.trigger('updateToolbarPos', pos);
     const unit = 'px';
     const { style } = this.canvas.getToolbarEl();
     style.top = `${pos.top}${unit}`;
