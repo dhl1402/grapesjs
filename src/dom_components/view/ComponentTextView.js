@@ -5,7 +5,7 @@ const compProt = ComponentView.prototype;
 
 export default ComponentView.extend({
   events: {
-    dblclick: 'onActive',
+    click: 'onActive',
     input: 'onInput'
   },
 
@@ -41,7 +41,7 @@ export default ComponentView.extend({
       return;
     }
 
-    e && e.stopPropagation && e.stopPropagation();
+    // e && e.stopPropagation && e.stopPropagation();
 
     if (rte) {
       try {
