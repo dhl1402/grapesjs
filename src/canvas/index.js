@@ -421,6 +421,8 @@ export default () => {
     },
 
     getTargetToElementFixed(el, elToMove, opts = {}) {
+      const toolbarMarginX = opts.toolbarMarginX || 0;
+      const toolbarMarginY = opts.toolbarMarginY || 0;
       const pos = opts.pos || this.getElementPos(el);
       const cvOff = opts.canvasOff || this.canvasRectOffset(el, pos);
       const toolbarH = elToMove.offsetHeight || 0;
@@ -431,8 +433,8 @@ export default () => {
       const frameOffset = cv.getFrameOffset(el);
       const { event } = opts;
 
-      let top = -toolbarH;
-      let left = pos.width - toolbarW;
+      let top = -toolbarH - toolbarMarginY;
+      let left = pos.width - toolbarW - toolbarMarginX;
       left = pos.left < -left ? -pos.left : left;
       left = elRight > frCvOff.width ? left - (elRight - frCvOff.width) : left;
 
@@ -442,8 +444,8 @@ export default () => {
       const elIsShort = fullHeight < frameOffset.height;
 
       if (cvOff.top < toolbarH) {
-        if (elIsShort) {
-          top = top + fullHeight;
+        if (elIsShort || opts.jumpOnHidden) {
+          top = top + fullHeight + 2 * toolbarMarginY;
         } else {
           top = -cvOff.top < pos.height ? -cvOff.top : pos.height;
         }
