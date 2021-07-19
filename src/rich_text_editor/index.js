@@ -39,7 +39,7 @@ export default () => {
     const style = toolbar.style;
     const size = '-1000px';
     style.top = size;
-    style.left = size;
+    style.right = size;
     style.display = 'none';
   };
 
@@ -279,8 +279,8 @@ export default () => {
         event: 'rteToolbarPosUpdate'
       });
 
-      style.top = pos.top + un;
-      style.left = 0 + un;
+      style.top = pos.top - 16 + un;
+      style.right = 0 + un;
     },
 
     /**
