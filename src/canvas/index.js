@@ -441,13 +441,19 @@ export default () => {
       // Scroll with the window if the top edge is reached and the
       // element is bigger than the canvas
       const fullHeight = pos.height + toolbarH;
-      const elIsShort = fullHeight < frameOffset.height;
-
+      const elIsShort = fullHeight < frameOffset.height; // toolbar height + widget height < screen height
+      const elIsAtHead = pos.top < toolbarH + opts.toolbarMarginY;
+      console.log('pos', pos);
+      console.log('toolbarH', toolbarH);
+      console.log('frameOffset.height', frameOffset.height);
+      console.log('cvOff.top ', cvOff.top);
       if (cvOff.top < toolbarH) {
-        if (elIsShort || opts.jumpOnHidden) {
+        if (!elIsAtHead && (elIsShort || opts.jumpOnHidden)) {
           top = top + fullHeight + 2 * toolbarMarginY;
         } else {
-          top = -cvOff.top < pos.height ? -cvOff.top : pos.height;
+          top =
+            toolbarMarginY +
+            (-cvOff.top < pos.height ? -cvOff.top : pos.height);
         }
       }
 
