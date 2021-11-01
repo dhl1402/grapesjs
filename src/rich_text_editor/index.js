@@ -41,6 +41,7 @@ export default () => {
     style.top = size;
     style.right = size;
     style.display = 'none';
+    style.opacity = 0;
   };
 
   return {
@@ -279,9 +280,11 @@ export default () => {
         event: 'rteToolbarPosUpdate',
         toolbarMarginY: 16
       });
-
       style.top = pos.top + un;
       style.right = 0 + un;
+      setTimeout(() => {
+        style.opacity = 1;
+      }, 100);
     },
 
     /**

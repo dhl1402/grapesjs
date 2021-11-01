@@ -425,7 +425,7 @@ export default () => {
       const toolbarMarginY = opts.toolbarMarginY || 0;
       const pos = opts.pos || this.getElementPos(el);
       const cvOff = opts.canvasOff || this.canvasRectOffset(el, pos);
-      const toolbarH = elToMove.offsetHeight || 0;
+      const toolbarH = elToMove.offsetHeight || 94;
       const toolbarW = elToMove.offsetWidth || 0;
       const elRight = pos.left + pos.width;
       const cv = this.getCanvasView();
@@ -440,15 +440,18 @@ export default () => {
 
       // Scroll with the window if the top edge is reached and the
       // element is bigger than the canvas
-      const fullHeight = pos.height + toolbarH;
-      const elIsShort = fullHeight < frameOffset.height; // toolbar height + widget height < screen height
+      const fullHeight = pos.height + toolbarH + toolbarMarginY;
+      const elIsShort = fullHeight < frameOffset.height; // toolbar height + widget height + toolbar margin < screen height
       const elIsAtHead = pos.top < toolbarH + opts.toolbarMarginY;
       console.log('pos', pos);
+      console.log('toolbarW', toolbarW);
       console.log('toolbarH', toolbarH);
       console.log('frameOffset.height', frameOffset.height);
       console.log('cvOff.top ', cvOff.top);
+      console.log('elIsShort', elIsShort);
+      console.log('elIsAtHead', elIsAtHead);
       if (cvOff.top < toolbarH) {
-        if (!elIsAtHead && (elIsShort || opts.jumpOnHidden)) {
+        if (!elIsAtHead || elIsShort) {
           top = top + fullHeight + 2 * toolbarMarginY;
         } else {
           top =
