@@ -3,5 +3,5 @@ export default {
   stylePrefix: 'css-',
 
   // Default CSS style
-  rules: []
+  rules: [],
 };

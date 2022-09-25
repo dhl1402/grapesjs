@@ -5,8 +5,7 @@ const KEY_TAG = 'tag';
 const KEY_ATTR = 'attributes';
 const KEY_CHILD = 'children';
 
-export const motionsEv =
-  'transitionend oTransitionEnd transitionend webkitTransitionEnd';
+export const motionsEv = 'transitionend oTransitionEnd transitionend webkitTransitionEnd';
 
 export const isDoc = el => el && el.nodeType === 9;
 
@@ -18,14 +17,10 @@ export const removeEl = el => {
 export const find = (el, query) => el.querySelectorAll(query);
 
 export const attrUp = (el, attrs = {}) =>
-  el &&
-  el.setAttribute &&
-  each(attrs, (value, key) => el.setAttribute(key, value));
+  el && el.setAttribute && each(attrs, (value, key) => el.setAttribute(key, value));
 
 export const isVisible = el => {
-  return (
-    el && !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length)
-  );
+  return el && !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 };
 
 export const empty = node => {
@@ -56,7 +51,7 @@ export const appendAtIndex = (parent, child, index) => {
 
 export const append = (parent, child) => appendAtIndex(parent, child);
 
-export const createEl = (tag, attrs = '', child) => {
+export const createEl = (tag, attrs = {}, child) => {
   const el = document.createElement(tag);
   attrs && each(attrs, (value, key) => el.setAttribute(key, value));
 
@@ -68,27 +63,32 @@ export const createEl = (tag, attrs = '', child) => {
   return el;
 };
 
+export const createText = str => document.createTextNode(str);
+
 // Unfortunately just creating `KeyboardEvent(e.type, e)` is not enough,
 // the keyCode/which will be always `0`. Even if it's an old/deprecated
 // property keymaster (and many others) still use it... using `defineProperty`
 // hack seems the only way
 export const createCustomEvent = (e, cls) => {
   let oEvent;
+  const { type } = e;
   try {
-    oEvent = new window[cls](e.type, e);
-  } catch (e) {
+    oEvent = new window[cls](type, e);
+  } catch (err) {
     oEvent = document.createEvent(cls);
-    oEvent.initEvent(e.type, true, true);
+    oEvent.initEvent(type, true, true);
   }
-  oEvent.keyCodeVal = e.keyCode;
   oEvent._parentEvent = e;
-  ['keyCode', 'which'].forEach(prop => {
-    Object.defineProperty(oEvent, prop, {
-      get() {
-        return this.keyCodeVal;
-      }
+  if (type.indexOf('key') === 0) {
+    oEvent.keyCodeVal = e.keyCode;
+    ['keyCode', 'which'].forEach(prop => {
+      Object.defineProperty(oEvent, prop, {
+        get() {
+          return this.keyCodeVal;
+        },
+      });
     });
-  });
+  }
   return oEvent;
 };
 
