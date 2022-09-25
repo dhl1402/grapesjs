@@ -1258,7 +1258,8 @@ declare namespace grapesjs {
     | RichTextEditorEvent
     | ModalEvent
     | CommandEvent
-    | GeneralEvent;
+    | GeneralEvent
+    | 'updateToolbarPos';
 
   type ComponentEvent =
     | 'component:create'
